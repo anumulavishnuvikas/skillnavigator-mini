@@ -1,13 +1,8 @@
 
 import React, { createContext, useContext, useState } from "react";
 import { Company, Job, Skill } from "@/types";
-import { 
-  getAllCompanies, 
-  getAllJobs, 
-  getAllSkills, 
-  getCompaniesBySkills, 
-  getJobsBySkills 
-} from "@/data/mockData";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCompanies, getAllJobs, getAllSkills } from "@/services/supabaseQueries";
 
 interface DataContextType {
   skills: Skill[];
@@ -20,14 +15,46 @@ interface DataContextType {
   removeSkill: (skill: string) => void;
   clearSkills: () => void;
   searchJobsBySkills: () => void;
+  isLoading: boolean;
+  error: Error | null;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>(getAllCompanies());
-  const [filteredJobs, setFilteredJobs] = useState<Job[]>(getAllJobs());
+  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
+
+  const { 
+    data: skills = [], 
+    isLoading: isLoadingSkills,
+    error: skillsError
+  } = useQuery({
+    queryKey: ['skills'],
+    queryFn: getAllSkills
+  });
+
+  const { 
+    data: companies = [], 
+    isLoading: isLoadingCompanies,
+    error: companiesError
+  } = useQuery({
+    queryKey: ['companies'],
+    queryFn: getAllCompanies
+  });
+
+  const { 
+    data: jobs = [], 
+    isLoading: isLoadingJobs,
+    error: jobsError
+  } = useQuery({
+    queryKey: ['jobs'],
+    queryFn: getAllJobs
+  });
+
+  const isLoading = isLoadingSkills || isLoadingCompanies || isLoadingJobs;
+  const error = skillsError || companiesError || jobsError;
 
   const addSkill = (skill: string) => {
     if (!selectedSkills.includes(skill)) {
@@ -41,26 +68,35 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearSkills = () => {
     setSelectedSkills([]);
-    setFilteredCompanies(getAllCompanies());
-    setFilteredJobs(getAllJobs());
+    setFilteredCompanies(companies);
+    setFilteredJobs(jobs);
   };
 
   const searchJobsBySkills = () => {
     if (selectedSkills.length === 0) {
-      setFilteredCompanies(getAllCompanies());
-      setFilteredJobs(getAllJobs());
-    } else {
-      const companies = getCompaniesBySkills(selectedSkills);
-      const jobs = getJobsBySkills(selectedSkills);
       setFilteredCompanies(companies);
       setFilteredJobs(jobs);
+    } else {
+      const matchingJobs = jobs.filter(job =>
+        selectedSkills.some(skill =>
+          job.skills.some(jobSkill => jobSkill.name.toLowerCase() === skill.toLowerCase())
+        )
+      );
+
+      const matchingCompanyIds = new Set(matchingJobs.map(job => job.companyId));
+      const matchingCompanies = companies.filter(company =>
+        matchingCompanyIds.has(company.id)
+      );
+
+      setFilteredCompanies(matchingCompanies);
+      setFilteredJobs(matchingJobs);
     }
   };
 
   const value = {
-    skills: getAllSkills(),
-    companies: getAllCompanies(),
-    jobs: getAllJobs(),
+    skills,
+    companies,
+    jobs,
     filteredCompanies,
     filteredJobs,
     selectedSkills,
@@ -68,6 +104,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeSkill,
     clearSkills,
     searchJobsBySkills,
+    isLoading,
+    error
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

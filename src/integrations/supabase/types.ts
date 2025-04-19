@@ -9,6 +9,110 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      companies: {
+        Row: {
+          description: string
+          id: string
+          industry: string
+          location: string
+          logo: string
+          name: string
+          website: string
+        }
+        Insert: {
+          description: string
+          id?: string
+          industry: string
+          location: string
+          logo: string
+          name: string
+          website: string
+        }
+        Update: {
+          description?: string
+          id?: string
+          industry?: string
+          location?: string
+          logo?: string
+          name?: string
+          website?: string
+        }
+        Relationships: []
+      }
+      job_skills: {
+        Row: {
+          job_id: string
+          skill_id: string
+        }
+        Insert: {
+          job_id: string
+          skill_id: string
+        }
+        Update: {
+          job_id?: string
+          skill_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_skills_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_skills_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          company_id: string | null
+          description: string
+          experience: string
+          id: string
+          location: string
+          posted_date: string
+          salary: string | null
+          title: string
+          type: string
+        }
+        Insert: {
+          company_id?: string | null
+          description: string
+          experience: string
+          id?: string
+          location: string
+          posted_date?: string
+          salary?: string | null
+          title: string
+          type: string
+        }
+        Update: {
+          company_id?: string | null
+          description?: string
+          experience?: string
+          id?: string
+          location?: string
+          posted_date?: string
+          salary?: string | null
+          title?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -30,6 +134,21 @@ export type Database = {
           id?: string
           updated_at?: string
           username?: string | null
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          id: string
+          name: string
+        }
+        Insert: {
+          id?: string
+          name: string
+        }
+        Update: {
+          id?: string
+          name?: string
         }
         Relationships: []
       }
