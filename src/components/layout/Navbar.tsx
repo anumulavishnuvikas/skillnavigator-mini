@@ -2,9 +2,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Briefcase } from "lucide-react";
+import { Briefcase, LogIn } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const Navbar: React.FC = () => {
+  const { user } = useAuth();
+
   return (
     <nav className="bg-white border-b border-gray-200 py-4">
       <div className="container-custom flex justify-between items-center">
@@ -25,10 +28,24 @@ const Navbar: React.FC = () => {
             <Link to="/jobs">Jobs</Link>
           </Button>
         </div>
-        <div>
-          <Button asChild className="bg-hero-gradient hover:opacity-90">
-            <Link to="/search">Find Jobs</Link>
-          </Button>
+        <div className="flex items-center space-x-4">
+          {user ? (
+            <Button variant="ghost" asChild>
+              <Link to="/search">Search Jobs</Link>
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" asChild className="flex items-center">
+                <Link to="/auth">
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Sign In
+                </Link>
+              </Button>
+              <Button asChild className="bg-hero-gradient hover:opacity-90">
+                <Link to="/auth">Get Started</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </nav>
