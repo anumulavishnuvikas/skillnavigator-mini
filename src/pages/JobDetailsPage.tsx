@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getJobById, getCompanyById } from "@/data/mockData";
+import { getJobById, getCompanyById } from "@/services/supabaseQueries";  // Updated import
 import { Job, Company } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,31 +19,46 @@ const JobDetailsPage: React.FC = () => {
   const [job, setJob] = useState<Job | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
   
   useEffect(() => {
-    if (id) {
-      const jobData = getJobById(id);
-      if (jobData) {
-        setJob(jobData);
-        const companyData = getCompanyById(jobData.companyId);
-        if (companyData) {
-          setCompany(companyData);
+    const fetchJobAndCompany = async () => {
+      if (id) {
+        try {
+          const jobData = await getJobById(id);
+          if (jobData) {
+            setJob(jobData);
+            const companyData = await getCompanyById(jobData.companyId);
+            if (companyData) {
+              setCompany(companyData);
+            }
+          }
+        } catch (err) {
+          setError(err instanceof Error ? err : new Error('Failed to fetch job or company'));
+        } finally {
+          setLoading(false);
         }
       }
-      setLoading(false);
-    }
+    };
+
+    fetchJobAndCompany();
   }, [id]);
-  
-  // Format date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(date);
-  };
   
   if (loading) {
     return (
       <div className="container-custom py-16 text-center">
         <p>Loading job details...</p>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="container-custom py-16 text-center">
+        <p>Error: {error.message}</p>
+        <Button asChild>
+          <Link to="/jobs">Back to Jobs</Link>
+        </Button>
       </div>
     );
   }

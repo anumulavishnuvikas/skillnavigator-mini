@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getCompanyById } from "@/data/mockData";
+import { getCompanyById } from "@/services/supabaseQueries";  // Updated import
 import { Company } from "@/types";
 import JobCard from "@/components/ui/job-card";
 import { Button } from "@/components/ui/button";
@@ -12,21 +12,40 @@ const CompanyDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
   
   useEffect(() => {
-    if (id) {
-      const companyData = getCompanyById(id);
-      if (companyData) {
-        setCompany(companyData);
+    const fetchCompany = async () => {
+      if (id) {
+        try {
+          const companyData = await getCompanyById(id);
+          setCompany(companyData);
+        } catch (err) {
+          setError(err instanceof Error ? err : new Error('Failed to fetch company'));
+        } finally {
+          setLoading(false);
+        }
       }
-      setLoading(false);
-    }
+    };
+
+    fetchCompany();
   }, [id]);
   
   if (loading) {
     return (
       <div className="container-custom py-16 text-center">
         <p>Loading company details...</p>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="container-custom py-16 text-center">
+        <p>Error: {error.message}</p>
+        <Button asChild>
+          <Link to="/companies">Back to Companies</Link>
+        </Button>
       </div>
     );
   }
