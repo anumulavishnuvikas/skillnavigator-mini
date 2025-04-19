@@ -1,13 +1,10 @@
-
 import React from "react";
-
 const Footer: React.FC = () => {
-  return (
-    <footer className="bg-gray-100 py-8 mt-20">
+  return <footer className="bg-gray-100 py-8 mt-20">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-semibold mb-4">SkillSeeker</h3>
+            <h3 className="text-lg font-semibold mb-4">SkillNavgiator</h3>
             <p className="text-gray-600">Find the perfect job match for your skills.</p>
           </div>
           <div>
@@ -38,8 +35,6 @@ const Footer: React.FC = () => {
           <p>&copy; {new Date().getFullYear()} SkillSeeker. All rights reserved.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;

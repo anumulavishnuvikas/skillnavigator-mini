@@ -1,21 +1,19 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Briefcase, LogIn } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-
 const Navbar: React.FC = () => {
-  const { user } = useAuth();
-
-  return (
-    <nav className="bg-white border-b border-gray-200 py-4">
+  const {
+    user
+  } = useAuth();
+  return <nav className="bg-white border-b border-gray-200 py-4">
       <div className="container-custom flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2">
           <div className="bg-hero-gradient p-2 rounded-md">
             <Briefcase className="h-6 w-6 text-white" />
           </div>
-          <span className="text-xl font-bold text-gray-900">SkillSeeker</span>
+          <span className="text-xl font-bold text-gray-900">SkillNaviagtor</span>
         </Link>
         <div className="flex space-x-4">
           <Button variant="ghost" asChild>
@@ -29,12 +27,9 @@ const Navbar: React.FC = () => {
           </Button>
         </div>
         <div className="flex items-center space-x-4">
-          {user ? (
-            <Button variant="ghost" asChild>
+          {user ? <Button variant="ghost" asChild>
               <Link to="/search">Search Jobs</Link>
-            </Button>
-          ) : (
-            <>
+            </Button> : <>
               <Button variant="ghost" asChild className="flex items-center">
                 <Link to="/auth">
                   <LogIn className="mr-2 h-4 w-4" />
@@ -44,12 +39,9 @@ const Navbar: React.FC = () => {
               <Button asChild className="bg-hero-gradient hover:opacity-90">
                 <Link to="/auth">Get Started</Link>
               </Button>
-            </>
-          )}
+            </>}
         </div>
       </div>
-    </nav>
-  );
+    </nav>;
 };
-
 export default Navbar;
