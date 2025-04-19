@@ -53,11 +53,15 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
         </div>
         <p className="text-gray-600 line-clamp-2 h-12 mb-4">{job.description}</p>
         <div className="flex flex-wrap gap-2 mb-4">
-          {job.skills.map((skill) => (
-            <Badge key={skill.id} variant="secondary" className="bg-accent text-accent-foreground">
-              {skill.name}
-            </Badge>
-          ))}
+          {job.skills && job.skills.length > 0 ? (
+            job.skills.map((skill) => (
+              <Badge key={skill.id} variant="secondary" className="bg-accent text-accent-foreground">
+                {skill.name}
+              </Badge>
+            ))
+          ) : (
+            <span className="text-sm text-muted-foreground">No skills specified</span>
+          )}
         </div>
       </CardContent>
       <CardFooter className="pt-0 flex justify-between">

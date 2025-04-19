@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { Company, Job, Skill } from "@/types";
 
@@ -26,6 +25,12 @@ export async function getAllJobs(): Promise<Job[]> {
       company_id,
       companies (
         name
+      ),
+      job_skills (
+        skills (
+          id,
+          name
+        )
       )
     `);
   
@@ -35,7 +40,8 @@ export async function getAllJobs(): Promise<Job[]> {
     ...job,
     company: job.companies.name,
     companyId: job.company_id,
-    postedDate: job.posted_date
+    postedDate: job.posted_date,
+    skills: job.job_skills ? job.job_skills.map(js => js.skills) : []
   }));
 }
 
@@ -73,7 +79,7 @@ export async function getJobById(id: string): Promise<Job | null> {
     company: data.companies.name,
     companyId: data.company_id,
     postedDate: data.posted_date,
-    skills: data.job_skills.map(js => js.skills)
+    skills: data.job_skills ? data.job_skills.map(js => js.skills) : []
   };
 }
 
@@ -124,7 +130,7 @@ export async function getAllCompanies(): Promise<Company[]> {
         company: company.name,
         companyId: job.company_id,
         postedDate: job.posted_date,
-        skills: job.job_skills.map(js => js.skills)
+        skills: job.job_skills ? job.job_skills.map(js => js.skills) : []
       }))
   }));
 }
@@ -177,7 +183,7 @@ export async function getCompanyById(id: string): Promise<Company | null> {
       company: company.name,
       companyId: job.company_id,
       postedDate: job.posted_date,
-      skills: job.job_skills.map(js => js.skills)
+      skills: job.job_skills ? job.job_skills.map(js => js.skills) : []
     }))
   };
 }

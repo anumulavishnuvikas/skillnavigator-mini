@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getJobById, getCompanyById } from "@/services/supabaseQueries";  // Updated import
+import { getJobById, getCompanyById } from "@/services/supabaseQueries";
 import { Job, Company } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,12 @@ import {
   Globe, 
   ChevronLeft 
 } from "lucide-react";
+
+// Format date helper function
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
+};
 
 const JobDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

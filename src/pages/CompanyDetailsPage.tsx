@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getCompanyById } from "@/services/supabaseQueries";  // Updated import
+import { getCompanyById } from "@/services/supabaseQueries";
 import { Company } from "@/types";
 import JobCard from "@/components/ui/job-card";
 import { Button } from "@/components/ui/button";
