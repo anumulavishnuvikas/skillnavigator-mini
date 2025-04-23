@@ -49,8 +49,9 @@ const JobDetailsPage: React.FC = () => {
   }, [id]);
   
   const handleApply = () => {
-    if (company) {
-      window.open(company.website, '_blank', 'noopener,noreferrer');
+    if (company && job) {
+      const careerUrl = `${company.website}/careers?job_id=${job.id}`;
+      window.open(careerUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
