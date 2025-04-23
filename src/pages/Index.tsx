@@ -20,13 +20,17 @@ const Index: React.FC = () => {
   ).slice(0, 4);
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Hero />
       
-      <div className="container-custom py-16">
-        <div className="mb-12">
+      <div className="container-custom py-20">
+        {/* Featured Companies Section */}
+        <div className="mb-20">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold">Featured Companies</h2>
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Featured Companies</h2>
+              <p className="text-muted-foreground">Discover top companies hiring right now</p>
+            </div>
             <Button variant="ghost" asChild>
               <Link to="/companies" className="flex items-center">
                 View All <ArrowRight className="ml-2 h-4 w-4" />
@@ -40,9 +44,13 @@ const Index: React.FC = () => {
           </div>
         </div>
         
+        {/* Latest Jobs Section */}
         <div>
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold">Latest Jobs</h2>
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Latest Jobs</h2>
+              <p className="text-muted-foreground">Fresh opportunities added daily</p>
+            </div>
             <Button variant="ghost" asChild>
               <Link to="/jobs" className="flex items-center">
                 View All <ArrowRight className="ml-2 h-4 w-4" />
@@ -57,7 +65,8 @@ const Index: React.FC = () => {
         </div>
       </div>
       
-      <div className="bg-accent py-16">
+      {/* CTA Section */}
+      <div className="bg-accent py-20">
         <div className="container-custom text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to find your dream job?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
