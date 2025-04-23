@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { z } from "zod";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,13 +13,50 @@ const AuthPage = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { signIn, signUp, user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  if (user) {
+    navigate("/");
+    return null;
+  }
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    
+    // Email validation
+    const emailSchema = z.string().email("Please enter a valid email address");
+    try {
+      emailSchema.parse(email);
+    } catch (error) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    // Password validation
+    if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    // Username validation for signup
+    if (!isLogin && username.length < 3) {
+      newErrors.username = "Username must be at least 3 characters long";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    if (!validateForm()) {
+      setLoading(false);
+      return;
+    }
 
     try {
       if (isLogin) {
@@ -62,7 +100,11 @@ const AuthPage = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required={!isLogin}
+                className={errors.username ? "border-red-500" : ""}
               />
+              {errors.username && (
+                <p className="text-sm text-red-500 mt-1">{errors.username}</p>
+              )}
             </div>
           )}
           
@@ -76,7 +118,11 @@ const AuthPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className={errors.email ? "border-red-500" : ""}
             />
+            {errors.email && (
+              <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+            )}
           </div>
           
           <div>
@@ -89,7 +135,11 @@ const AuthPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className={errors.password ? "border-red-500" : ""}
             />
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+            )}
           </div>
           
           <Button type="submit" className="w-full" disabled={loading}>
@@ -100,7 +150,10 @@ const AuthPage = () => {
         <p className="mt-4 text-center text-sm text-muted-foreground">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
-            onClick={() => setIsLogin(!isLogin)}
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setErrors({});
+            }}
             className="text-primary hover:underline"
           >
             {isLogin ? "Sign Up" : "Sign In"}

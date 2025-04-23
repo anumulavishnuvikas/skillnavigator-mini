@@ -1,12 +1,12 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DataProvider } from "@/context/DataContext";
 import { AuthProvider } from "@/context/AuthContext";
 import Layout from "@/components/layout/Layout";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "@/pages/Index";
 import SearchPage from "@/pages/SearchPage";
 import JobsPage from "@/pages/JobsPage";
@@ -30,11 +30,46 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<AuthPage />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/jobs" element={<JobsPage />} />
-                <Route path="/jobs/:id" element={<JobDetailsPage />} />
-                <Route path="/companies" element={<CompaniesPage />} />
-                <Route path="/companies/:id" element={<CompanyDetailsPage />} />
+                <Route
+                  path="/search"
+                  element={
+                    <ProtectedRoute>
+                      <SearchPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/jobs"
+                  element={
+                    <ProtectedRoute>
+                      <JobsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/jobs/:id"
+                  element={
+                    <ProtectedRoute>
+                      <JobDetailsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/companies"
+                  element={
+                    <ProtectedRoute>
+                      <CompaniesPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/companies/:id"
+                  element={
+                    <ProtectedRoute>
+                      <CompanyDetailsPage />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Layout>
