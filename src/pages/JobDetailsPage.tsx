@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getJobById, getCompanyById } from "@/services/supabaseQueries";
@@ -14,7 +13,6 @@ import {
   ChevronLeft 
 } from "lucide-react";
 
-// Format date helper function
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
@@ -50,6 +48,12 @@ const JobDetailsPage: React.FC = () => {
     fetchJobAndCompany();
   }, [id]);
   
+  const handleApply = () => {
+    if (company) {
+      window.open(company.website, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   if (loading) {
     return (
       <div className="container-custom py-16 text-center">
@@ -139,8 +143,12 @@ const JobDetailsPage: React.FC = () => {
                 </div>
                 
                 <div className="mt-8 pt-8 border-t">
-                  <Button size="lg" className="w-full bg-hero-gradient hover:opacity-90">
-                    Apply for this Position
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-hero-gradient hover:opacity-90"
+                    onClick={handleApply}
+                  >
+                    Apply on {company?.name}'s Website
                   </Button>
                 </div>
               </div>
