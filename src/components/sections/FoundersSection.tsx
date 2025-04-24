@@ -56,54 +56,59 @@ const FoundersSection: React.FC = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {founders.map((founder) => (
-            <Card key={founder.name} className="group overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="space-y-6">
-                  <div className="flex items-center gap-6">
-                    <Avatar className="w-20 h-20 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
-                      <AvatarImage src={founder.image} alt={founder.name} className="object-cover" />
-                      <AvatarFallback>{founder.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                    </Avatar>
-                    <div className="text-left">
-                      <h3 className="text-xl font-semibold">{founder.name}</h3>
-                      <p className="text-muted-foreground">{founder.role}</p>
+        <div className="relative">
+          <div className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory">
+            {founders.map((founder) => (
+              <Card 
+                key={founder.name} 
+                className="group overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 w-[300px] snap-center"
+              >
+                <CardContent className="p-8">
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-6">
+                      <Avatar className="w-20 h-20 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
+                        <AvatarImage src={founder.image} alt={founder.name} className="object-cover" />
+                        <AvatarFallback>{founder.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                      </Avatar>
+                      <div className="text-left">
+                        <h3 className="text-xl font-semibold">{founder.name}</h3>
+                        <p className="text-muted-foreground">{founder.role}</p>
+                      </div>
+                    </div>
+                    
+                    <p className="text-muted-foreground leading-relaxed">
+                      {founder.bio}
+                    </p>
+                    
+                    <div className="flex gap-4 pt-2">
+                      <a 
+                        href={founder.linkedin} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <Linkedin className="w-5 h-5" />
+                      </a>
+                      <a 
+                        href={founder.twitter} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <Twitter className="w-5 h-5" />
+                      </a>
+                      <a 
+                        href={`mailto:${founder.email}`}
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <Mail className="w-5 h-5" />
+                      </a>
                     </div>
                   </div>
-                  
-                  <p className="text-muted-foreground leading-relaxed">
-                    {founder.bio}
-                  </p>
-                  
-                  <div className="flex gap-4 pt-2">
-                    <a 
-                      href={founder.linkedin} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Linkedin className="w-5 h-5" />
-                    </a>
-                    <a 
-                      href={founder.twitter} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Twitter className="w-5 h-5" />
-                    </a>
-                    <a 
-                      href={`mailto:${founder.email}`}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Mail className="w-5 h-5" />
-                    </a>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -111,4 +116,3 @@ const FoundersSection: React.FC = () => {
 };
 
 export default FoundersSection;
-
