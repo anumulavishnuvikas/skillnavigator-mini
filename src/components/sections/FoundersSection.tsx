@@ -22,6 +22,24 @@ const founders = [
     linkedin: "https://linkedin.com/in/michael-chen",
     twitter: "https://twitter.com/michaelchen",
     email: "michael@skillseeker.com"
+  },
+  {
+    name: "Emily Rodriguez",
+    role: "Product Lead",
+    image: "https://source.unsplash.com/random/400x400/?portrait&3",
+    bio: "UX/UI expert with a decade of experience in product design. Focused on creating intuitive and accessible user experiences.",
+    linkedin: "https://linkedin.com/in/emily-rodriguez",
+    twitter: "https://twitter.com/emilyrodriguez",
+    email: "emily@skillseeker.com"
+  },
+  {
+    name: "David Kim",
+    role: "Marketing Director",
+    image: "https://source.unsplash.com/random/400x400/?portrait&4",
+    bio: "Growth strategist with expertise in digital marketing and partnerships. Previously led marketing at several Fortune 500 companies.",
+    linkedin: "https://linkedin.com/in/david-kim",
+    twitter: "https://twitter.com/davidkim",
+    email: "david@skillseeker.com"
   }
 ];
 
@@ -38,7 +56,7 @@ const FoundersSection: React.FC = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {founders.map((founder) => (
             <Card key={founder.name} className="group overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300">
               <CardContent className="p-8">
@@ -93,3 +111,4 @@ const FoundersSection: React.FC = () => {
 };
 
 export default FoundersSection;
+
