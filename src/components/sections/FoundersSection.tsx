@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -26,51 +27,61 @@ const founders = [
 
 const FoundersSection: React.FC = () => {
   return (
-    <section className="bg-accent py-20">
+    <section className="py-24 bg-gradient-to-b from-accent to-background">
       <div className="container-custom">
-        <h2 className="text-3xl font-bold text-center mb-4">Meet Our Founders</h2>
-        <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-          Bringing together decades of experience in tech and recruitment to revolutionize how people find their dream jobs.
-        </p>
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            Meet Our Founders
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            Bringing together decades of experience in tech and recruitment to revolutionize how people find their dream jobs.
+          </p>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {founders.map((founder) => (
-            <Card key={founder.name} className="bg-white">
-              <CardContent className="pt-6">
-                <div className="text-center mb-6">
-                  <Avatar className="w-24 h-24 mx-auto mb-4">
-                    <AvatarImage src={founder.image} alt={founder.name} />
-                    <AvatarFallback>{founder.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                  </Avatar>
-                  <h3 className="text-xl font-semibold mb-1">{founder.name}</h3>
-                  <p className="text-muted-foreground">{founder.role}</p>
-                </div>
-                
-                <p className="text-gray-600 text-center mb-6">{founder.bio}</p>
-                
-                <div className="flex justify-center space-x-4">
-                  <a 
-                    href={founder.linkedin} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <Linkedin className="w-5 h-5" />
-                  </a>
-                  <a 
-                    href={founder.twitter} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <Twitter className="w-5 h-5" />
-                  </a>
-                  <a 
-                    href={`mailto:${founder.email}`}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <Mail className="w-5 h-5" />
-                  </a>
+            <Card key={founder.name} className="group overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300">
+              <CardContent className="p-8">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-6">
+                    <Avatar className="w-20 h-20 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
+                      <AvatarImage src={founder.image} alt={founder.name} className="object-cover" />
+                      <AvatarFallback>{founder.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                    </Avatar>
+                    <div className="text-left">
+                      <h3 className="text-xl font-semibold">{founder.name}</h3>
+                      <p className="text-muted-foreground">{founder.role}</p>
+                    </div>
+                  </div>
+                  
+                  <p className="text-muted-foreground leading-relaxed">
+                    {founder.bio}
+                  </p>
+                  
+                  <div className="flex gap-4 pt-2">
+                    <a 
+                      href={founder.linkedin} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <Linkedin className="w-5 h-5" />
+                    </a>
+                    <a 
+                      href={founder.twitter} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <Twitter className="w-5 h-5" />
+                    </a>
+                    <a 
+                      href={`mailto:${founder.email}`}
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <Mail className="w-5 h-5" />
+                    </a>
+                  </div>
                 </div>
               </CardContent>
             </Card>
