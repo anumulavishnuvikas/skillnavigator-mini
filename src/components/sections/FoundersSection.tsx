@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { linkedin, Twitter, Mail } from "lucide-react";
+import { Linkedin, Twitter, Mail } from "lucide-react";
 
 const founders = [
   {
@@ -55,7 +55,7 @@ const FoundersSection: React.FC = () => {
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    <linkedin className="w-5 h-5" />
+                    <Linkedin className="w-5 h-5" />
                   </a>
                   <a 
                     href={founder.twitter} 
