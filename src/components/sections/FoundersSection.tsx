@@ -9,7 +9,6 @@ const founders = [
     name: "Sarah Johnson",
     role: "CEO & Co-Founder",
     image: "https://source.unsplash.com/random/400x400/?portrait&1",
-    bio: "Former tech executive with 15+ years of experience in HR and recruitment. Passionate about connecting talent with opportunities.",
     linkedin: "https://linkedin.com/in/sarah-johnson",
     twitter: "https://twitter.com/sarahjohnson",
     email: "sarah@skillseeker.com"
@@ -18,7 +17,6 @@ const founders = [
     name: "Michael Chen",
     role: "CTO & Co-Founder",
     image: "https://source.unsplash.com/random/400x400/?portrait&2",
-    bio: "Tech entrepreneur with multiple successful startups. Specialized in AI and machine learning applications in recruitment.",
     linkedin: "https://linkedin.com/in/michael-chen",
     twitter: "https://twitter.com/michaelchen",
     email: "michael@skillseeker.com"
@@ -27,7 +25,6 @@ const founders = [
     name: "Emily Rodriguez",
     role: "Product Lead",
     image: "https://source.unsplash.com/random/400x400/?portrait&3",
-    bio: "UX/UI expert with a decade of experience in product design. Focused on creating intuitive and accessible user experiences.",
     linkedin: "https://linkedin.com/in/emily-rodriguez",
     twitter: "https://twitter.com/emilyrodriguez",
     email: "emily@skillseeker.com"
@@ -36,7 +33,6 @@ const founders = [
     name: "David Kim",
     role: "Marketing Director",
     image: "https://source.unsplash.com/random/400x400/?portrait&4",
-    bio: "Growth strategist with expertise in digital marketing and partnerships. Previously led marketing at several Fortune 500 companies.",
     linkedin: "https://linkedin.com/in/david-kim",
     twitter: "https://twitter.com/davidkim",
     email: "david@skillseeker.com"
@@ -57,30 +53,26 @@ const FoundersSection: React.FC = () => {
         </div>
         
         <div className="relative">
-          <div className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory">
+          <div className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory scrollbar-none">
             {founders.map((founder) => (
               <Card 
                 key={founder.name} 
-                className="group overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 w-[300px] snap-center"
+                className="group overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 w-[250px] snap-center"
               >
-                <CardContent className="p-8">
-                  <div className="space-y-6">
-                    <div className="flex items-center gap-6">
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    <div className="flex flex-col items-center gap-4">
                       <Avatar className="w-20 h-20 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
                         <AvatarImage src={founder.image} alt={founder.name} className="object-cover" />
                         <AvatarFallback>{founder.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                       </Avatar>
-                      <div className="text-left">
+                      <div className="text-center">
                         <h3 className="text-xl font-semibold">{founder.name}</h3>
                         <p className="text-muted-foreground">{founder.role}</p>
                       </div>
                     </div>
                     
-                    <p className="text-muted-foreground leading-relaxed">
-                      {founder.bio}
-                    </p>
-                    
-                    <div className="flex gap-4 pt-2">
+                    <div className="flex justify-center gap-4">
                       <a 
                         href={founder.linkedin} 
                         target="_blank" 
