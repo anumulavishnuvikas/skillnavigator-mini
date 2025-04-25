@@ -48,18 +48,15 @@ const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Content - Video Demo */}
+          {/* Right Content - YouTube Video Embed */}
           <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white/5 backdrop-blur-sm">
-            <video 
-              className="w-full h-full rounded-2xl"
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-            >
-              <source src="https://cdn.dribbble.com/uploads/47181/original/963b4f8739cbdf86ca3f5a9a4321d469.mp4?1686834502" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <iframe 
+              className="w-full aspect-video rounded-2xl"
+              src="https://www.youtube.com/embed/sJGVcb5fn2c?autoplay=1&mute=1&loop=1&controls=0&playlist=sJGVcb5fn2c"
+              title="SkillSeeker Demonstration"
+              frameBorder="0"
+              allow="autoplay; encrypted-media; picture-in-picture"
+            />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent pointer-events-none"></div>
           </div>
