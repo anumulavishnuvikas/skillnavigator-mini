@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -43,7 +42,7 @@ const FoundersSection: React.FC = () => {
   return (
     <section className="py-24 bg-gradient-to-b from-accent to-background">
       <div className="container-custom">
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-16 animate-fade-in">
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             Meet Our Founders
           </h2>
@@ -57,13 +56,18 @@ const FoundersSection: React.FC = () => {
             {founders.map((founder) => (
               <Card 
                 key={founder.name} 
-                className="group overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 w-[250px] snap-center"
+                className="group overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 w-[300px] snap-center hover:scale-[1.02]"
               >
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div className="flex flex-col items-center gap-4">
                       <Avatar className="w-20 h-20 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
-                        <AvatarImage src={founder.image} alt={founder.name} className="object-cover" />
+                        <AvatarImage 
+                          src={founder.image} 
+                          alt={founder.name} 
+                          className="object-cover"
+                          loading="lazy"
+                        />
                         <AvatarFallback>{founder.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                       </Avatar>
                       <div className="text-center">
@@ -73,28 +77,22 @@ const FoundersSection: React.FC = () => {
                     </div>
                     
                     <div className="flex justify-center gap-4">
-                      <a 
-                        href={founder.linkedin} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <Linkedin className="w-5 h-5" />
-                      </a>
-                      <a 
-                        href={founder.twitter} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <Twitter className="w-5 h-5" />
-                      </a>
-                      <a 
-                        href={`mailto:${founder.email}`}
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <Mail className="w-5 h-5" />
-                      </a>
+                      {[
+                        { icon: Linkedin, href: founder.linkedin, label: "LinkedIn" },
+                        { icon: Twitter, href: founder.twitter, label: "Twitter" },
+                        { icon: Mail, href: `mailto:${founder.email}`, label: "Email" }
+                      ].map(({ icon: Icon, href, label }) => (
+                        <a 
+                          key={label}
+                          href={href} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-primary transition-colors duration-300 hover:scale-110"
+                          aria-label={`Contact ${founder.name} via ${label}`}
+                        >
+                          <Icon className="w-5 h-5" />
+                        </a>
+                      ))}
                     </div>
                   </div>
                 </CardContent>

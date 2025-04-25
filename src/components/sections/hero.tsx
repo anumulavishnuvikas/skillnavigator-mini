@@ -1,16 +1,21 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 const Hero: React.FC = () => {
   const { user } = useAuth();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
   
   return (
     <div className="bg-gradient-to-b from-accent to-background py-16 md:py-24">
       <div className="container-custom">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
           {/* Left Content */}
           <div className="flex flex-col text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
@@ -21,15 +26,15 @@ const Hero: React.FC = () => {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               {user ? (
-                <Button asChild size="lg" className="bg-hero-gradient hover:opacity-90">
+                <Button asChild size="lg" className="bg-hero-gradient hover:opacity-90 transition-all duration-300 hover:scale-105">
                   <Link to="/search">Search Jobs</Link>
                 </Button>
               ) : (
                 <>
-                  <Button asChild size="lg" className="bg-hero-gradient hover:opacity-90">
+                  <Button asChild size="lg" className="bg-hero-gradient hover:opacity-90 transition-all duration-300 hover:scale-105">
                     <Link to="/auth">Get Started</Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline">
+                  <Button asChild size="lg" variant="outline" className="hover:bg-accent/50 transition-all duration-300">
                     <Link to="/auth?mode=signin">Sign In</Link>
                   </Button>
                 </>
@@ -39,11 +44,15 @@ const Hero: React.FC = () => {
             <div className="mt-12">
               <p className="text-sm text-gray-600 mb-4">Trusted by professionals from leading companies</p>
               <div className="flex flex-wrap gap-8 items-center">
-                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969170.png" alt="Google" className="h-8 opacity-50 hover:opacity-75 transition-opacity" />
-                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969242.png" alt="Microsoft" className="h-8 opacity-50 hover:opacity-75 transition-opacity" />
-                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969083.png" alt="Amazon" className="h-8 opacity-50 hover:opacity-75 transition-opacity" />
-                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969098.png" alt="Apple" className="h-8 opacity-50 hover:opacity-75 transition-opacity" />
-                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969152.png" alt="Facebook" className="h-8 opacity-50 hover:opacity-75 transition-opacity" />
+                {['Google', 'Microsoft', 'Amazon', 'Apple', 'Facebook'].map((company, index) => (
+                  <img 
+                    key={company}
+                    src={`https://cdn-icons-png.flaticon.com/512/5969/${5969170 + (index * 20)}.png`}
+                    alt={company}
+                    className="h-8 opacity-50 hover:opacity-75 transition-opacity duration-300"
+                    loading="lazy"
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -56,9 +65,11 @@ const Hero: React.FC = () => {
               title="SkillSeeker Demonstration"
               frameBorder="0"
               allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
             />
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent pointer-events-none"></div>
+            {/* Enhanced Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-accent/30 via-accent/20 to-transparent pointer-events-none"></div>
           </div>
         </div>
       </div>
