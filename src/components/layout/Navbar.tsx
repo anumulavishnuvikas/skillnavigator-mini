@@ -2,12 +2,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Briefcase, LogIn, LogOut } from "lucide-react";
+import { Briefcase, LogIn, LogOut, PlusCircle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 
 const Navbar: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const { toast } = useToast();
 
   const handleSignOut = async () => {
@@ -25,6 +25,8 @@ const Navbar: React.FC = () => {
       });
     }
   };
+
+  const isRecruiter = profile?.role === 'recruiter' || profile?.role === 'admin';
 
   return (
     <nav className="bg-white border-b border-gray-200 py-4">
@@ -54,6 +56,16 @@ const Navbar: React.FC = () => {
               <Button variant="ghost" asChild>
                 <Link to="/search">Search Jobs</Link>
               </Button>
+              
+              {isRecruiter && (
+                <Button variant="outline" asChild className="flex items-center">
+                  <Link to="/post-job">
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Post Job
+                  </Link>
+                </Button>
+              )}
+              
               <Button 
                 variant="ghost" 
                 onClick={handleSignOut}

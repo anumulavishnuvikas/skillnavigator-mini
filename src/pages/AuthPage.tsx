@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
 
 const AuthPage = () => {
@@ -12,6 +13,7 @@ const AuthPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [isRecruiter, setIsRecruiter] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { signIn, signUp, user } = useAuth();
@@ -63,7 +65,7 @@ const AuthPage = () => {
         await signIn(email, password);
         navigate("/");
       } else {
-        await signUp(email, password, username);
+        await signUp(email, password, username, isRecruiter);
         toast({
           title: "Success!",
           description: "Please check your email to confirm your account.",
@@ -141,6 +143,22 @@ const AuthPage = () => {
               <p className="text-sm text-red-500 mt-1">{errors.password}</p>
             )}
           </div>
+
+          {!isLogin && (
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="recruiter" 
+                checked={isRecruiter}
+                onCheckedChange={(checked) => setIsRecruiter(checked === true)}
+              />
+              <label 
+                htmlFor="recruiter" 
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Sign up as a Recruiter
+              </label>
+            </div>
+          )}
           
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}

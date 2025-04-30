@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +16,7 @@ import CompanyDetailsPage from "@/pages/CompanyDetailsPage";
 import JobDetailsPage from "@/pages/JobDetailsPage";
 import AuthPage from "@/pages/AuthPage";
 import NotFound from "@/pages/NotFound";
+import PostJobPage from "@/pages/PostJobPage";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +69,14 @@ const App = () => (
                   element={
                     <ProtectedRoute>
                       <CompanyDetailsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/post-job"
+                  element={
+                    <ProtectedRoute>
+                      <PostJobPage />
                     </ProtectedRoute>
                   }
                 />
