@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,7 @@ const AuthPage = () => {
   const [isRecruiter, setIsRecruiter] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [activeTab, setActiveTab] = useState<"user" | "recruiter">("user");
   const { signIn, signUp, user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -27,6 +28,13 @@ const AuthPage = () => {
     navigate("/");
     return null;
   }
+
+  // Update isRecruiter based on tab selection and login state
+  useEffect(() => {
+    if (!isLogin) {
+      setIsRecruiter(activeTab === "recruiter");
+    }
+  }, [activeTab, isLogin]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -92,13 +100,18 @@ const AuthPage = () => {
           {isLogin ? "Sign In" : "Create Account"}
         </h1>
 
-        <Tabs defaultValue="user" className="mb-6">
+        <Tabs 
+          defaultValue="user" 
+          className="mb-6"
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as "user" | "recruiter")}
+        >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="user" className="flex items-center">
               <User className="mr-2 h-4 w-4" />
               Job Seeker
             </TabsTrigger>
-            <TabsTrigger value="recruiter" className="flex items-center" onClick={() => setIsRecruiter(!isLogin)}>
+            <TabsTrigger value="recruiter" className="flex items-center">
               <Users className="mr-2 h-4 w-4" />
               Recruiter
             </TabsTrigger>
@@ -108,14 +121,12 @@ const AuthPage = () => {
             <div className="p-4 bg-muted/40 rounded-lg mb-4">
               <p className="text-sm">Sign in as a job seeker to find and apply for positions</p>
             </div>
-            {isRecruiter && !isLogin && setIsRecruiter(false)}
           </TabsContent>
           
           <TabsContent value="recruiter">
             <div className="p-4 bg-muted/40 rounded-lg mb-4">
               <p className="text-sm">Sign in as a recruiter to post and manage job listings</p>
             </div>
-            {!isRecruiter && !isLogin && setIsRecruiter(true)}
           </TabsContent>
         </Tabs>
         
