@@ -8,6 +8,7 @@ import { DataProvider } from "@/context/DataContext";
 import { AuthProvider } from "@/context/AuthContext";
 import Layout from "@/components/layout/Layout";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import RecruiterRoute from "@/components/auth/RecruiterRoute";
 import Index from "@/pages/Index";
 import SearchPage from "@/pages/SearchPage";
 import JobsPage from "@/pages/JobsPage";
@@ -75,9 +76,9 @@ const App = () => (
                 <Route
                   path="/post-job"
                   element={
-                    <ProtectedRoute>
+                    <RecruiterRoute>
                       <PostJobPage />
-                    </ProtectedRoute>
+                    </RecruiterRoute>
                   }
                 />
                 <Route path="*" element={<NotFound />} />

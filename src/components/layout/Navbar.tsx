@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Briefcase, LogIn, LogOut, PlusCircle, User, Users } from "lucide-react";
+import { Briefcase, Building, LogIn, LogOut, PlusCircle, User, Users } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -53,22 +53,33 @@ const Navbar: React.FC = () => {
         <div className="flex items-center space-x-4">
           {user ? (
             <>
-              <Button variant="ghost" asChild>
-                <Link to="/search">Search Jobs</Link>
-              </Button>
-              
-              {isRecruiter && (
-                <Button variant="outline" asChild className="flex items-center">
-                  <Link to="/post-job">
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Post Job
-                  </Link>
+              {!isRecruiter && (
+                <Button variant="ghost" asChild>
+                  <Link to="/search">Search Jobs</Link>
                 </Button>
               )}
               
-              <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full text-sm">
+              {isRecruiter && (
+                <>
+                  <Button variant="outline" asChild className="flex items-center">
+                    <Link to="/post-job">
+                      <PlusCircle className="mr-2 h-4 w-4" />
+                      Post Job
+                    </Link>
+                  </Button>
+                  
+                  <Button variant="ghost" asChild className="flex items-center">
+                    <Link to="/manage-jobs">
+                      <Building className="mr-2 h-4 w-4" />
+                      My Listings
+                    </Link>
+                  </Button>
+                </>
+              )}
+              
+              <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm ${isRecruiter ? "bg-blue-100" : "bg-gray-100"}`}>
                 {isRecruiter ? (
-                  <Users className="h-4 w-4 text-primary" />
+                  <Users className="h-4 w-4 text-blue-600" />
                 ) : (
                   <User className="h-4 w-4 text-primary" />
                 )}

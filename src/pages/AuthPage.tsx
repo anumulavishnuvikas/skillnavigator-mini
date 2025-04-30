@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Users } from "lucide-react";
+import { Building, User, Users } from "lucide-react";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -119,13 +119,37 @@ const AuthPage = () => {
           
           <TabsContent value="user">
             <div className="p-4 bg-muted/40 rounded-lg mb-4">
-              <p className="text-sm">Sign in as a job seeker to find and apply for positions</p>
+              {isLogin ? (
+                <p className="text-sm">Sign in as a job seeker to find and apply for positions</p>
+              ) : (
+                <div>
+                  <h3 className="font-medium mb-1">Job Seeker Account</h3>
+                  <p className="text-sm">Create an account to browse and apply for job listings</p>
+                  <ul className="text-sm mt-2 list-disc list-inside">
+                    <li>Search for jobs that match your skills</li>
+                    <li>Track your application status</li>
+                    <li>Receive notifications for new relevant positions</li>
+                  </ul>
+                </div>
+              )}
             </div>
           </TabsContent>
           
           <TabsContent value="recruiter">
             <div className="p-4 bg-muted/40 rounded-lg mb-4">
-              <p className="text-sm">Sign in as a recruiter to post and manage job listings</p>
+              {isLogin ? (
+                <p className="text-sm">Sign in as a recruiter to post and manage job listings</p>
+              ) : (
+                <div>
+                  <h3 className="font-medium mb-1">Recruiter Account</h3>
+                  <p className="text-sm">Create an account to post and manage job listings</p>
+                  <ul className="text-sm mt-2 list-disc list-inside">
+                    <li>Post unlimited job listings</li>
+                    <li>Manage company profiles</li>
+                    <li>Review and process applications</li>
+                  </ul>
+                </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>
@@ -184,23 +208,36 @@ const AuthPage = () => {
             )}
           </div>
 
-          {!isLogin && (
-            <div className="flex items-center space-x-2 pl-1">
-              <Checkbox 
-                id="recruiter" 
-                checked={isRecruiter}
-                onCheckedChange={(checked) => setIsRecruiter(checked === true)}
-              />
-              <label 
-                htmlFor="recruiter" 
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Sign up as a Recruiter
-              </label>
+          {!isLogin && activeTab === "recruiter" && (
+            <div className="p-4 bg-blue-50 rounded-lg">
+              <div className="flex items-center mb-4">
+                <Building className="h-5 w-5 mr-2 text-blue-500" />
+                <h3 className="font-medium">Recruiter Information</h3>
+              </div>
+              <p className="text-sm text-muted-foreground mb-3">
+                As a recruiter, you'll be able to post job listings and manage applications.
+              </p>
+              <div className="flex items-center space-x-2 pl-1">
+                <Checkbox 
+                  id="recruiter" 
+                  checked={isRecruiter}
+                  onCheckedChange={(checked) => setIsRecruiter(checked === true)}
+                />
+                <label 
+                  htmlFor="recruiter" 
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  I confirm that I am a recruiter
+                </label>
+              </div>
             </div>
           )}
           
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button 
+            type="submit" 
+            className={activeTab === "recruiter" ? "w-full bg-blue-600 hover:bg-blue-700" : "w-full"}
+            disabled={loading}
+          >
             {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
           </Button>
         </form>
