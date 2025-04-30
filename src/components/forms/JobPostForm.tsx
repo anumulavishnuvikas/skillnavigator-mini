@@ -69,10 +69,22 @@ const JobPostForm: React.FC = () => {
   const onSubmit = async (values: JobFormValues) => {
     setIsSubmitting(true);
     try {
+      // Make sure all required fields are present
+      const jobData = {
+        title: values.title,
+        company_id: values.company_id,
+        location: values.location,
+        type: values.type,
+        experience: values.experience,
+        description: values.description,
+        // Optional field
+        salary: values.salary || null,
+      };
+
       // Insert the new job
       const { data, error } = await supabase
         .from("jobs")
-        .insert([values])
+        .insert([jobData])
         .select();
 
       if (error) {
