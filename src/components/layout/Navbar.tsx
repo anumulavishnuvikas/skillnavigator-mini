@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Briefcase, LogIn, LogOut, PlusCircle } from "lucide-react";
+import { Briefcase, LogIn, LogOut, PlusCircle, User, Users } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
           <div className="bg-hero-gradient p-2 rounded-md">
             <Briefcase className="h-6 w-6 text-white" />
           </div>
-          <span className="text-xl font-bold text-gray-900">SkillNaviagtor</span>
+          <span className="text-xl font-bold text-gray-900">SkillNavigator</span>
         </Link>
         
         <div className="flex space-x-4">
@@ -65,6 +65,15 @@ const Navbar: React.FC = () => {
                   </Link>
                 </Button>
               )}
+              
+              <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full text-sm">
+                {isRecruiter ? (
+                  <Users className="h-4 w-4 text-primary" />
+                ) : (
+                  <User className="h-4 w-4 text-primary" />
+                )}
+                <span className="font-medium">{isRecruiter ? "Recruiter" : "Job Seeker"}</span>
+              </div>
               
               <Button 
                 variant="ghost" 

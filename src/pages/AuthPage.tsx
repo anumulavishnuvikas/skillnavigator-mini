@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { User, Users } from "lucide-react";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -89,6 +91,33 @@ const AuthPage = () => {
         <h1 className="text-3xl font-bold mb-8 text-center">
           {isLogin ? "Sign In" : "Create Account"}
         </h1>
+
+        <Tabs defaultValue="user" className="mb-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="user" className="flex items-center">
+              <User className="mr-2 h-4 w-4" />
+              Job Seeker
+            </TabsTrigger>
+            <TabsTrigger value="recruiter" className="flex items-center" onClick={() => setIsRecruiter(!isLogin)}>
+              <Users className="mr-2 h-4 w-4" />
+              Recruiter
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="user">
+            <div className="p-4 bg-muted/40 rounded-lg mb-4">
+              <p className="text-sm">Sign in as a job seeker to find and apply for positions</p>
+            </div>
+            {isRecruiter && !isLogin && setIsRecruiter(false)}
+          </TabsContent>
+          
+          <TabsContent value="recruiter">
+            <div className="p-4 bg-muted/40 rounded-lg mb-4">
+              <p className="text-sm">Sign in as a recruiter to post and manage job listings</p>
+            </div>
+            {!isRecruiter && !isLogin && setIsRecruiter(true)}
+          </TabsContent>
+        </Tabs>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLogin && (
@@ -145,7 +174,7 @@ const AuthPage = () => {
           </div>
 
           {!isLogin && (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 pl-1">
               <Checkbox 
                 id="recruiter" 
                 checked={isRecruiter}
