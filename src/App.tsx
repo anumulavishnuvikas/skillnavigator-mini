@@ -9,6 +9,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import Layout from "@/components/layout/Layout";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import RecruiterRoute from "@/components/auth/RecruiterRoute";
+import AdminRoute from "@/components/auth/AdminRoute";
 import Index from "@/pages/Index";
 import SearchPage from "@/pages/SearchPage";
 import JobsPage from "@/pages/JobsPage";
@@ -79,6 +80,18 @@ const App = () => (
                     <RecruiterRoute>
                       <PostJobPage />
                     </RecruiterRoute>
+                  }
+                />
+                {/* Example of how to use AdminRoute for an admin-only page */}
+                <Route
+                  path="/admin"
+                  element={
+                    <AdminRoute>
+                      <div className="container-custom py-12">
+                        <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+                        <p>This page is only accessible to administrators.</p>
+                      </div>
+                    </AdminRoute>
                   }
                 />
                 <Route path="*" element={<NotFound />} />
