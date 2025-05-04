@@ -70,6 +70,18 @@ const ManageJobsPage = () => {
   // Delete job mutation
   const deleteJobMutation = useMutation({
     mutationFn: async (jobId: string) => {
+      // First delete related records in job_skills table
+      const { error: skillsError } = await supabase
+        .from("job_skills")
+        .delete()
+        .eq("job_id", jobId);
+      
+      if (skillsError) {
+        console.error("Error deleting job skills:", skillsError);
+        throw skillsError;
+      }
+      
+      // Then delete the job record
       const { error } = await supabase
         .from("jobs")
         .delete()
@@ -78,9 +90,12 @@ const ManageJobsPage = () => {
       if (error) {
         throw error;
       }
+      
+      return jobId;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recruiter-jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
       toast({
         title: "Success",
         description: "Job listing deleted successfully",

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getJobById, getCompanyById } from "@/services/supabaseQueries";
@@ -50,7 +51,13 @@ const JobDetailsPage: React.FC = () => {
   
   const handleApply = () => {
     if (company && job) {
-      const careerUrl = `${company.website}/careers?job_id=${job.id}`;
+      // Properly construct the career page URL
+      const websiteUrl = company.website || '';
+      // Remove trailing slash if present
+      const baseUrl = websiteUrl.endsWith('/') ? websiteUrl.slice(0, -1) : websiteUrl;
+      const careerUrl = `${baseUrl}/careers`;
+      
+      // Open in a new tab
       window.open(careerUrl, '_blank', 'noopener,noreferrer');
     }
   };
@@ -136,11 +143,15 @@ const JobDetailsPage: React.FC = () => {
                 
                 <h2 className="text-xl font-semibold mt-8 mb-4">Required Skills</h2>
                 <div className="flex flex-wrap gap-2">
-                  {job.skills.map((skill) => (
-                    <Badge key={skill.id} variant="secondary" className="bg-accent text-accent-foreground">
-                      {skill.name}
-                    </Badge>
-                  ))}
+                  {job.skills && job.skills.length > 0 ? (
+                    job.skills.map((skill) => (
+                      <Badge key={skill.id} variant="secondary" className="bg-accent text-accent-foreground">
+                        {skill.name}
+                      </Badge>
+                    ))
+                  ) : (
+                    <span className="text-sm text-muted-foreground">No skills specified</span>
+                  )}
                 </div>
                 
                 <div className="mt-8 pt-8 border-t">
