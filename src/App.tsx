@@ -19,6 +19,8 @@ import JobDetailsPage from "@/pages/JobDetailsPage";
 import AuthPage from "@/pages/AuthPage";
 import NotFound from "@/pages/NotFound";
 import PostJobPage from "@/pages/PostJobPage";
+import ManageJobsPage from "@/pages/ManageJobsPage";
+import EditJobPage from "@/pages/EditJobPage";
 
 const queryClient = new QueryClient();
 
@@ -79,6 +81,22 @@ const App = () => (
                   element={
                     <RecruiterRoute>
                       <PostJobPage />
+                    </RecruiterRoute>
+                  }
+                />
+                <Route
+                  path="/manage-jobs"
+                  element={
+                    <RecruiterRoute>
+                      <ManageJobsPage />
+                    </RecruiterRoute>
+                  }
+                />
+                <Route
+                  path="/edit-job/:id"
+                  element={
+                    <RecruiterRoute>
+                      <EditJobPage />
                     </RecruiterRoute>
                   }
                 />

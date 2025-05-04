@@ -6,7 +6,7 @@ import * as z from "zod";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllCompanies } from "@/services/supabaseQueries";
 
 import {
@@ -40,12 +40,18 @@ const jobSchema = z.object({
 
 type JobFormValues = z.infer<typeof jobSchema>;
 
+interface JobPostFormProps {
+  initialData?: any;
+  isEditing?: boolean;
+}
+
 const jobTypes = ["Full-time", "Part-time", "Contract", "Freelance", "Internship"];
 const experienceLevels = ["Entry Level", "Mid Level", "Senior Level", "Executive"];
 
-const JobPostForm: React.FC = () => {
+export const JobPostForm: React.FC<JobPostFormProps> = ({ initialData, isEditing = false }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data: companies = [], isLoading: loadingCompanies } = useQuery({
@@ -56,15 +62,30 @@ const JobPostForm: React.FC = () => {
   const form = useForm<JobFormValues>({
     resolver: zodResolver(jobSchema),
     defaultValues: {
-      title: "",
-      company_id: "",
-      location: "",
-      type: "",
-      experience: "",
-      description: "",
-      salary: "",
+      title: initialData?.title || "",
+      company_id: initialData?.company_id || "",
+      location: initialData?.location || "",
+      type: initialData?.type || "",
+      experience: initialData?.experience || "",
+      description: initialData?.description || "",
+      salary: initialData?.salary || "",
     },
   });
+
+  useEffect(() => {
+    // Update form values when initialData changes
+    if (initialData) {
+      form.reset({
+        title: initialData.title || "",
+        company_id: initialData.company_id || "",
+        location: initialData.location || "",
+        type: initialData.type || "",
+        experience: initialData.experience || "",
+        description: initialData.description || "",
+        salary: initialData.salary || "",
+      });
+    }
+  }, [initialData, form]);
 
   const onSubmit = async (values: JobFormValues) => {
     setIsSubmitting(true);
@@ -81,26 +102,45 @@ const JobPostForm: React.FC = () => {
         salary: values.salary || null,
       };
 
-      // Insert the new job
-      const { data, error } = await supabase
-        .from("jobs")
-        .insert([jobData])
-        .select();
+      let result;
+
+      if (isEditing && initialData?.id) {
+        // Update existing job
+        result = await supabase
+          .from("jobs")
+          .update(jobData)
+          .eq("id", initialData.id)
+          .select();
+      } else {
+        // Insert new job
+        result = await supabase
+          .from("jobs")
+          .insert([jobData])
+          .select();
+      }
+
+      const { data, error } = result;
 
       if (error) {
         throw error;
       }
 
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["recruiter-jobs"] });
+
       toast({
         title: "Success!",
-        description: "Job posted successfully.",
+        description: isEditing ? "Job updated successfully." : "Job posted successfully.",
       });
 
-      // Reset form
-      form.reset();
+      // Reset form if not editing
+      if (!isEditing) {
+        form.reset();
+      }
       
-      // Redirect to the jobs page
-      navigate("/jobs");
+      // Redirect to manage jobs page
+      navigate("/manage-jobs");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -143,6 +183,7 @@ const JobPostForm: React.FC = () => {
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                   disabled={loadingCompanies}
+                  value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -202,6 +243,7 @@ const JobPostForm: React.FC = () => {
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -230,6 +272,7 @@ const JobPostForm: React.FC = () => {
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -273,7 +316,7 @@ const JobPostForm: React.FC = () => {
             className="w-full bg-hero-gradient hover:opacity-90" 
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Posting..." : "Post Job"}
+            {isSubmitting ? (isEditing ? "Updating..." : "Posting...") : (isEditing ? "Update Job" : "Post Job")}
           </Button>
         </form>
       </Form>

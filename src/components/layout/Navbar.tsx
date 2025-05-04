@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Briefcase, Building, LogIn, LogOut, PlusCircle, User, Users } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -9,6 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 const Navbar: React.FC = () => {
   const { user, profile, signOut } = useAuth();
   const { toast } = useToast();
+  const location = useLocation();
 
   const handleSignOut = async () => {
     try {
