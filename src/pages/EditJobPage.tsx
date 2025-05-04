@@ -29,20 +29,29 @@ const EditJobPage = () => {
       
       return data;
     },
-    onSuccess: (data) => {
-      if (data) {
-        setInitialData(data);
+    meta: {
+      onSuccess: (data) => {
+        if (data) {
+          setInitialData(data);
+        }
+      },
+      onError: (error: any) => {
+        toast({
+          title: "Error",
+          description: error.message || "Failed to load job data",
+          variant: "destructive",
+        });
+        navigate("/manage-jobs");
       }
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to load job data",
-        variant: "destructive",
-      });
-      navigate("/manage-jobs");
     }
   });
+
+  // Use useEffect instead of relying on onSuccess callback
+  useEffect(() => {
+    if (job) {
+      setInitialData(job);
+    }
+  }, [job]);
 
   if (isLoading) {
     return (
